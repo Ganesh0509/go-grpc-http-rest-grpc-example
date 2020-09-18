@@ -1,0 +1,10 @@
+FROM golang:latest as builder
+RUN mkdir /app
+WORKDIR /app
+ENV GO111MODULE=on
+COPY . .
+RUN go mod download
+WORKDIR /app/main/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o shippy-service-consignment
+EXPOSE 9192
+CMD ["./shippy-service-consignment"]

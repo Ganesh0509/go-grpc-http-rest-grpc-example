@@ -26,7 +26,7 @@ func run() error {
 	mux.Handle("/", gwmux)
 
 	log.Println("grpc-gateway listen on localhost:8080")
-	return http.ListenAndServe(":8080", mux)
+	return http.ListenAndServe(":8081", mux)
 }
 
 func newGateway(ctx context.Context) (http.Handler, error) {
@@ -34,7 +34,7 @@ func newGateway(ctx context.Context) (http.Handler, error) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
 	gwmux := runtime.NewServeMux()
-	if err := gw.RegisterGreeterHandlerFromEndpoint(ctx, gwmux, ":9192", opts); err != nil {
+	if err := gw.RegisterGreeterHandlerFromEndpoint(ctx, gwmux, "grpc-server:9192", opts); err != nil {
 		return nil, err
 	}
 
